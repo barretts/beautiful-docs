@@ -14,7 +14,7 @@ exports.Generator = Generator
 #
 # filename : The manifest's filename
 # callback : A function that will be called with the Manifest object
-exports.open = (filename, callback) -> 
+exports.open = (filename, callback) ->
     Manifest.load filename, callback
 
 # Creates a Manifest object from a directory containing .md files
@@ -55,9 +55,10 @@ exports.generateIndex = (title, manifests, filename, options={}, callback=null) 
 # dir  : The directory where the files to server are located
 # port : The port on which the server should listen to, default: 8080
 exports.serveStaticDir = (dir, port=8080) ->
+    errorHandler = require 'errorhandler'
     express = require 'express'
+    serveStatic = require 'serve-static'
     app = express()
-    app.configure =>
-        app.use express.static(dir)
-        app.use express.errorHandler({ dumpExceptions: true, showStack: true })
+    app.use serveStatic(dir)
+    app.use errorHandler({ dumpExceptions: true, showStack: true })
     app.listen port
